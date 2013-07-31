@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>form</title>
+    <script type="text/javascript" src="lib/utils/require.js"></script>
+    <script type="text/javascript">
+        require.config({
+            baseUrl: 'webcomponent',
+            paths: {
+                gk:'../lib/gk/jquery.gk-0.5.1',
+                jquery:'../lib/jquery/jquery-1.10.1'
+            },
+            shim: {'gk': {deps: ['jquery']} }
+        });
+
+        require(['gk'], function(gk){
+//            $.gk.createTag(['text']);
+            require(['testele'], function () {
+                $.gk.init(arguments);
+            });
+        }) ;
+    </script>
+</head>
+<body gk-app>
+    <testele compId='icsc' name='orderNo' shippingDate='20130710'>
+        <testcol name="OrderDate" label="Order Date"></testcol>
+
+    </testele>
+</body>
+</html>

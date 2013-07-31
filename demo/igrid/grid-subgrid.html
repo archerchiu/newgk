@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>grid summary footer</title>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="lib/utils/require.js"></script>
+    <script type="text/javascript" src="lib/jquery/jquery-1.10.1.js"></script>
+    <script type="text/javascript" src="lib/utils/gku.js"></script>
+
+    <script type="text/javascript">
+        require.config({
+            baseUrl: 'webcomponent',
+            paths: {
+                gk: '../lib/gk/jquery.gk-0.5.1'
+            }
+        });
+
+        require(['gk'], function (gk) {
+//            $.gk.createTag(['text']);
+            require(['igrid'], function () {
+                $.gk.init(arguments);
+            });
+        });
+
+        function getdata() {
+            var mydata = [
+                {id:"1",invdate:"2010-05-24",name:"test",note:"note",tax:"10.00",total:"2111.00"} ,
+                {id:"2",invdate:"2010-05-25",name:"test2",note:"note2",tax:"20.00",total:"320.00"},
+                {id:"3",invdate:"2007-09-01",name:"test3",note:"note3",tax:"30.00",total:"430.00"},
+                {id:"4",invdate:"2007-10-04",name:"test",note:"note",tax:"10.00",total:"210.00"},
+                {id:"5",invdate:"2007-10-05",name:"test2",note:"note2",tax:"20.00",total:"320.00"},
+                {id:"6",invdate:"2007-09-06",name:"test3",note:"note3",tax:"30.00",total:"430.00"},
+                {id:"7",invdate:"2007-10-04",name:"test",note:"note",tax:"10.00",total:"210.00"},
+                {id:"8",invdate:"2007-10-03",name:"test2",note:"note2",amount:"300.00",tax:"21.00",total:"320.00"},
+                {id:"9",invdate:"2007-09-01",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"11",invdate:"2007-10-01",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"12",invdate:"2007-10-02",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"13",invdate:"2007-09-01",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"14",invdate:"2007-10-04",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"15",invdate:"2007-10-05",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"16",invdate:"2007-09-06",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"17",invdate:"2007-10-04",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"18",invdate:"2007-10-03",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"19",invdate:"2007-09-01",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"21",invdate:"2007-10-01",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"22",invdate:"2007-10-02",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"23",invdate:"2007-09-01",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"24",invdate:"2007-10-04",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"25",invdate:"2007-10-05",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"26",invdate:"2007-09-06",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"27",invdate:"2007-10-04",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"28",invdate:"2007-10-03",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"29",invdate:"2007-09-01",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"}
+            ];
+            return mydata ;
+        }
+
+
+    </script>
+</head>
+
+<body gk-app>
+
+<igrid id='order' heading='訂單清單' datasrc='getdata()' rowNum='30'  height='auto' groupfield='name' groupcollapse='true'>
+    <icol name="id" header="Inv No"></icol>
+    <icol name="invdate" header="Date" key="true"></icol>
+    <icol name="name" header="Client"></icol>
+    <icol name="amount" header="Amount"></icol>
+    <icol name="tax" header="Tax" summaryTpl="最大: <b>{0}</b>" summaryType="max"></icol>
+    <icol name="total" header="Total" summaryTpl="合計: <b>{0}</b>" summaryType="sum"></icol>
+    <icol name="note" header="Notes" summaryTpl="共 <b>{0}</b> 筆" summaryType="count"></icol>
+    <subgrid rowNum='20' datasrc='data/subgrid.txt?key=${row_id}' datatype='xml'>
+        <icol header='No' name='num' width='80' key='true'></icol>
+        <icol header='Item' name='item' width='130'></icol>
+        <icol header='Qty' name='qty' width='70' align='right'></icol>
+        <icol header='Unit' name='unit' width='70' align='right'></icol>
+        <icol header='Line Total' name='total' width='70'></icol>
+    </subgrid>
+</igrid>
+
+
+</body>
+</html>

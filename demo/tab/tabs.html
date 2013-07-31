@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>tabs</title>
+    <script type="text/javascript" src="lib/utils/require.js"></script>
+    <script type="text/javascript" src="lib/utils/header.js"></script>
+    <script type="text/javascript">
+        require.config({
+            baseUrl: 'webcomponent',
+            paths: {
+                gk: '../lib/gk/jquery.gk-0.5.1'
+            }
+        });
+
+        require(['gk'], function (gk) {
+//            $.gk.createTag(['text']);
+            require(['igrid','tabPanel','tab'], function () {
+                $.gk.init(arguments);
+            });
+        });
+    </script>
+</head>
+
+<body gk-app>
+
+<tabPanel>
+    <tab name='頁籤一' id='tab1'>
+        <p>I'm in Section 1.</p>
+    </tab>
+    <tab name='頁籤二' id='tab2'>
+        <p>Howdy, I'm in Section 2.</p>
+    </tab>
+</tabPanel>
+
+
+</body>
+</html>

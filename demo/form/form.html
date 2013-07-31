@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>form</title>
+    <link rel="stylesheet" href="lib/w2ui-1.2/w2ui-1.2.css"/>
+    <script type="text/javascript" src="lib/require/require.js"></script>
+    <script type="text/javascript">
+        require.config({
+            baseUrl: 'webcomponent',
+            paths: {
+                gk:'../lib/gk/jquery.gk-0.5',
+                jquery:'../lib/jquery/jquery-1.10.1',
+                underscore: '../lib/utils/underscore',
+                domReady: '../lib/require/domReady'
+            },
+            shim: {'gk': {deps: ['jquery']} }
+        });
+
+        require(['gk','form/ffield'], function(gk){
+            $.gk.createTag(['ffield']);
+            require(['jqgrid', 'jqcol', 'jqcolend'], function () {
+                $.gk.init(arguments);
+            });
+        }) ;
+
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

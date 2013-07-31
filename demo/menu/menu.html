@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Main Menu</title>
+    <script type="text/javascript" src="lib/utils/require.js"></script>
+    <script type="text/javascript" src="lib/utils/header.js"></script>
+    <script type="text/javascript">
+        require.config({
+            baseUrl: 'webcomponent',
+            paths: {
+                gk: '../lib/gk/jquery.gk-0.5.1'
+            }
+        });
+
+        require(['gk'], function (gk) {
+//            $.gk.createTag(['text']);
+            require(['menuBar','menuBarItem','menuItem','menu'], function () {
+                $.gk.init(arguments);
+            });
+        });
+
+
+    </script>
+</head>
+
+<body gk-app>
+
+<menuBar title="冶金服務雲">
+    <menuBarItem text="[鋼種_化學成分_規範]">
+        <menu>
+            <menuItem text="鋼種代號" href="鋼種代號.gul"></menuItem>
+            <menuItem text="化學成分管制" href="化學成分管制.gul"></menuItem>
+            <menuItem text="TP產品規範"></menuItem>
+            <menuItem text="LV2">
+                <menu>
+                    <menuItem text='基本資料設定'></menuItem>
+                    <menuItem text='傳票維護作業'></menuItem>
+                </menu>
+            </menuItem>
+        </menu>
+    </menuBarItem>
+    <menuBarItem text="[訂單_客戶]">
+        <menu>
+            <menuItem text="客戶訂購歷史" onClick="js:openPG4"></menuItem>
+            <menuItem text="訴賠報告" onClick="js:openPG5"></menuItem>
+            <menuItem text="客戶通訊錄" onClick="js:openPG6"></menuItem>
+            <menuItem text="客戶訂單消長" onClick="js:openPG7"></menuItem>
+            <menuItem text="熱冷軋LEEWAY" onClick="js:openPG8"></menuItem>
+        </menu>
+    </menuBarItem>
+    <menuBarItem text="[機化性]">
+        <menu>
+            <menuItem text="冷軋機性" onClick="js:openPG9"></menuItem>
+            <menuItem text="熱軋機性" onClick="js:openPG10"></menuItem>
+            <menuItem text="鋼板機性" onClick="js:openPG11"></menuItem>
+            <menuItem text="冷軋化性" onClick="js:openPG12"></menuItem>
+            <menuItem text="熱軋化性" onClick="js:openPG13"></menuItem>
+            <menuItem text="冷軋暫留及再處理" onClick="js:openPG14"></menuItem>
+        </menu>
+    </menuBarItem>
+    <menuBarItem text="[指標轉換]">
+        <menu>
+            <menuItem text="硬度指標轉換" onClick="js:openPG15"></menuItem>
+        </menu>
+    </menuBarItem>
+</menuBar>
+
+</body>
+</html>

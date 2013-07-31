@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <script src='gk/lib/require/require.js'></script>
+    <script src='gk/lib/flot/jquery.js'></script>
+    <script src='gk/lib/gk/jquery.gk-0.5.js'></script>
+    <script gk-tags='linechart_flot' src='gk/gk-loader.js'></script>
+    <script type="text/javascript">
+      $(document).on('gkComponentsReady', function (w) {
+        var d1 = [];
+        for (var i = 0; i < 14; i += 0.5) {
+          d1.push([i, Math.sin(i)]);
+        }
+        var d2 = [[0, 3], [4, 8], [8, 5], [9, 13]];
+        // A null signifies separate line segments
+        var d3 = [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]];
+        
+        var plot = $('#my').gk("render", [ 
+          {label:'Test1', data:d1}, 
+          {label:'Test2', data:d2},
+          {label:'Test3', data:d3}
+        ]);
+        
+        plot.on('plotclick', function(event, pos, item){
+			console.log(event);
+			console.log(pos);
+		});
+      });
+    </script>
+  </head>
+  <body gk-app>
+    <linechart_flot id="my" xlabel='測試X' ylabel='測試Y'></linechart_flot>
+    
+  </body>
+</html>

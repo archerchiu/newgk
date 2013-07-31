@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menu-Tab-Grid</title>
+    <script type="text/javascript" src="lib/utils/require.js"></script>
+    <script type="text/javascript" src="lib/utils/header.js"></script>
+    <script type="text/javascript">
+        require.config({
+            baseUrl: 'webcomponent',
+            paths: {
+                gk: '../lib/gk/jquery.gk-0.5.1'
+            }
+        });
+
+        require(['gk'], function (gk) {
+//            $.gk.createTag(['text']);
+            require(['menuBar','menuBarItem','menuItem','menu','igrid','tabPanel','tab'], function () {
+                $.gk.init(arguments);
+            });
+        });
+
+        function getdata() {
+            var mydata = [
+                {id:"1",invdate:"2010-05-24",name:"test",note:"note",tax:"10.00",total:"2111.00"} ,
+                {id:"2",invdate:"2010-05-25",name:"test2",note:"note2",tax:"20.00",total:"320.00"},
+                {id:"3",invdate:"2007-09-01",name:"test3",note:"note3",tax:"30.00",total:"430.00"},
+                {id:"4",invdate:"2007-10-04",name:"test",note:"note",tax:"10.00",total:"210.00"},
+                {id:"5",invdate:"2007-10-05",name:"test2",note:"note2",tax:"20.00",total:"320.00"},
+                {id:"6",invdate:"2007-09-06",name:"test3",note:"note3",tax:"30.00",total:"430.00"},
+                {id:"7",invdate:"2007-10-04",name:"test",note:"note",tax:"10.00",total:"210.00"},
+                {id:"8",invdate:"2007-10-03",name:"test2",note:"note2",amount:"300.00",tax:"21.00",total:"320.00"},
+                {id:"9",invdate:"2007-09-01",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"11",invdate:"2007-10-01",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"12",invdate:"2007-10-02",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"13",invdate:"2007-09-01",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"14",invdate:"2007-10-04",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"15",invdate:"2007-10-05",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"16",invdate:"2007-09-06",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"17",invdate:"2007-10-04",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"18",invdate:"2007-10-03",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"19",invdate:"2007-09-01",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"21",invdate:"2007-10-01",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"22",invdate:"2007-10-02",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"23",invdate:"2007-09-01",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"24",invdate:"2007-10-04",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"25",invdate:"2007-10-05",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"26",invdate:"2007-09-06",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"27",invdate:"2007-10-04",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"28",invdate:"2007-10-03",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"29",invdate:"2007-09-01",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"}
+            ];
+            return mydata ;
+        }
+
+    </script>
+</head>
+
+<body gk-app>
+
+<menuBar title="冶金服務雲">
+    <menuBarItem text="[鋼種_化學成分_規範]">
+        <menu>
+            <menuItem text="鋼種代號" href="鋼種代號.gul"></menuItem>
+            <menuItem text="化學成分管制" href="化學成分管制.gul"></menuItem>
+            <menuItem text="TP產品規範"></menuItem>
+            <menuItem text="LV2">
+                <menu>
+                    <menuItem text='基本資料設定'></menuItem>
+                    <menuItem text='傳票維護作業'></menuItem>
+                </menu>
+            </menuItem>
+        </menu>
+    </menuBarItem>
+    <menuBarItem text="[訂單_客戶]">
+        <menu>
+            <menuItem text="客戶訂購歷史" onClick="js:openPG4"></menuItem>
+            <menuItem text="訴賠報告" onClick="js:openPG5"></menuItem>
+            <menuItem text="客戶通訊錄" onClick="js:openPG6"></menuItem>
+            <menuItem text="客戶訂單消長" onClick="js:openPG7"></menuItem>
+            <menuItem text="熱冷軋LEEWAY" onClick="js:openPG8"></menuItem>
+        </menu>
+    </menuBarItem>
+    <menuBarItem text="[機化性]">
+        <menu>
+            <menuItem text="冷軋機性" onClick="js:openPG9"></menuItem>
+            <menuItem text="熱軋機性" onClick="js:openPG10"></menuItem>
+            <menuItem text="鋼板機性" onClick="js:openPG11"></menuItem>
+            <menuItem text="冷軋化性" onClick="js:openPG12"></menuItem>
+            <menuItem text="熱軋化性" onClick="js:openPG13"></menuItem>
+            <menuItem text="冷軋暫留及再處理" onClick="js:openPG14"></menuItem>
+        </menu>
+    </menuBarItem>
+    <menuBarItem text="[指標轉換]">
+        <menu>
+            <menuItem text="硬度指標轉換" onClick="js:openPG15"></menuItem>
+        </menu>
+    </menuBarItem>
+</menuBar>
+
+
+<tabPanel>
+    <tab name='頁籤一' id='tab1'>
+        <p>I'm in Section 1.</p>
+    </tab>
+    <tab name='頁籤二' id='tab2'>
+        <igrid id='order' heading='訂單清單' datasrc='data/orders.txt' rowNum='10'  height='500' groupfield='custName' groupcollapse='false'>
+            <icol name="custName" header="客戶名稱"></icol>
+            <icol name="orderNo" header="訂單編號"></icol>
+            <icol name="thick" header="厚度"></icol>
+            <icol name="width" header="寬度"></icol>
+            <icol name="psr" header="PSR No."></icol>
+            <icol name="apn" header="APN No."></icol>
+        </igrid>
+    </tab>
+
+    <tab name='頁籤 3' id='tab3'>
+
+        <igrid id='sub' heading='Sub Grid' datasrc='getdata()' rowNum='30'  height='600' groupfield='name' groupcollapse='true'>
+            <icol name="id" header="Inv No"></icol>
+            <icol name="invdate" header="Date" key="true"></icol>
+            <icol name="name" header="Client"></icol>
+            <icol name="amount" header="Amount"></icol>
+            <icol name="tax" header="Tax" summaryTpl="最大: <b>{0}</b>" summaryType="max"></icol>
+            <icol name="total" header="Total" summaryTpl="合計: <b>{0}</b>" summaryType="sum"></icol>
+            <icol name="note" header="Notes" summaryTpl="共 <b>{0}</b> 筆" summaryType="count"></icol>
+            <subgrid rowNum='20' datasrc='data/subgrid.txt?key=${row_id}' datatype='xml'>
+                <icol header='No' name='num' width='80' key='true'></icol>
+                <icol header='Item' name='item' width='130'></icol>
+                <icol header='Qty' name='qty' width='70' align='right'></icol>
+                <icol header='Unit' name='unit' width='70' align='right'></icol>
+                <icol header='Line Total' name='total' width='70'></icol>
+            </subgrid>
+        </igrid>
+
+    </tab>
+    <tab name='頁籤 4' id='tab4'>
+        <p>Howdy, I'm in Section 4.</p>
+    </tab>
+</tabPanel>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <script src='../gk/lib/require/require.js'></script>
+    <script src='../gk/lib/jquery/jquery-1.9.1.min.js'></script>
+    <script src='../gk/lib/gk/jquery.gk-0.5.js'></script>
+    <script gk-tags='chosen' src='../gk/gk-loader.js'></script>
+    <script>
+	var test1 = function(t) {
+		console.log(t);
+	};
+    </script>
+</head>
+<body gk-app>
+	<chosen id="cb" empty="eeeeeee" label="性別" labelWidth="80px" title="This is checkbox..." enable="true" value="男生" visible="true" width="300px" onchange="test1('changed...');">m:男生,f:女生</chosen>
+</body>
+</html>

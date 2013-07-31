@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>iGrid</title>
+    <script type="text/javascript" src="lib/utils/require.js"></script>
+    <script type="text/javascript" src="lib/utils/header.js"></script>
+    <script type="text/javascript">
+        require.config({
+            baseUrl: 'webcomponent',
+            paths: {
+                gk: '../lib/gk/jquery.gk-0.5.1'
+            }
+        });
+
+        require(['gk'], function (gk) {
+//            $.gk.createTag(['text']);
+            require(['igrid'], function () {
+                $.gk.init(arguments);
+            });
+        });
+    </script>
+</head>
+
+<body gk-app>
+<igrid id='order' caption='訂單清單' datasrc='data/orders.txt' rowNum='10'  height='auto' groupfield='custName' groupcollapse='false'>
+    <icol name="custName" header="客戶名稱"></icol>
+    <icol name="orderNo" header="訂單編號"></icol>
+    <icol name="thick" header="厚度"></icol>
+    <icol name="width" header="寬度"></icol>
+    <icol name="psr" header="PSR No."></icol>
+    <icol name="apn" header="APN No."></icol>
+</igrid>
+</body>
+</html>
