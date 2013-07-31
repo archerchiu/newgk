@@ -12,6 +12,7 @@ fast, light weight !
 /lib/gk
 -------
   jquery.gk-0.5.js 目前官方的plugin
+  
   jquery.gk-0.5.1.js 我稍為加工過的，暫時先不要用
   
   
