@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" media="screen" href="../../lib/bootstrap/css/bootstrap.min.css">
+  </head>
+  <body gk-app>
+    <div class="btn-group">
+      <button id='danger' type="button" class="btn btn-default">Danger</button>
+      <button id='success' type="button" class="btn btn-default">Success</button>
+      <button id='info' type="button" class="btn btn-default">Info</button>
+      <button id='warn' type="button" class="btn btn-default">Warn</button>
+    </div>
+
+    <div class="btn-group">
+      <button id='show1' type="button" class="btn btn-default" onclick="$('#b').show()">顯示Danger</button>
+      <button id='show2' type="button" class="btn btn-default" onclick="$('#c').show()">顯示Success</button>
+      <button id='show3' type="button" class="btn btn-default" onclick="$('#d').show()">顯示Info</button>
+      <button id='show4' type="button" class="btn btn-default" onclick="$('#e').show()">顯示Warn</button>
+    </div>
+
+    <alert id='a'></alert>
+
+    <alert id='b' connotation='danger'><strong>Danger!</strong>危險</alert>
+    <alert id='c' connotation='success'><strong>Success!</strong>成功</alert>
+    <alert id='d' connotation='info'><strong>Info!</strong>通知</alert>
+    <alert id='e'><strong>Default!</strong>警告</alert>
+
+    <script src='../../lib/utils/require.js'></script>
+    <script src='../../lib/jquery/jquery-1.10.1.js'></script>
+    <script src='../../lib/gk/jquery.gk-0.5.js'></script>
+    <script gk-tags='alert' src='../../gk-loader.js'></script>
+    <script type="text/javascript">
+      $(document).on('gkComponentsReady', function() {
+        $('#danger').click(function() {
+          $('#a').gk('danger', '<strong>Danger!</strong>危險');
+        });
+
+        $('#success').click(function() {
+          $('#a').gk('success', '<strong>Success!</strong>成功');
+        });
+
+        $('#info').click(function() {
+          $('#a').gk('info', '<strong>Info!</strong>通知');
+        });
+
+        $('#warn').click(function() {
+          $('#a').gk('warn', '<strong>Default!</strong>警告');
+        });
+      });
+    </script>
+  </body>
+</html>
