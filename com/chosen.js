@@ -23,7 +23,7 @@ requirejs.config({
 //define module (component)
 define('chosen', ['chosen.jquery'], function () {
   return {
-    template: "<span><span id='{{id}}_label'></span><select id='{{id}}' allowBlank='{{allowBlank}}' class='{{class}}' empty='{{data-placeholder}}' enable='{{enable}}' height='{{height}}' label='{{label}}' labelWidth='{{labelWidth}}' name='{{name}}' style='{{style}}' title='{{title}}' value='{{value}}' visible='{{visible}}' width='{{width}}' multiple='{{multiple}}' gk-onclick='{{onclick}}'><content></content></select></span>",
+    template: "<span><span id='{{id}}_label'></span><select id='{{id}}' allowBlank='{{allowBlank}}' class='{{class}}' empty='{{empty}}' enable='{{enable}}' height='{{height}}' label='{{label}}' labelWidth='{{labelWidth}}' name='{{name}}' style='{{style}}' title='{{title}}' value='{{value}}' visible='{{visible}}' width='{{width}}' multiple='{{multiple}}' gk-onclick='{{onclick}}'><content></content></select></span>",
     script: function() {
       var $ = window.jQuery,
           _id;
@@ -50,6 +50,7 @@ define('chosen', ['chosen.jquery'], function () {
             ab = $ele.attr('allowBlank'),
             v = $ele.attr('visible'),
             value = $ele.attr('value'),
+            empty = $ele.attr('empty'),
             enable = $ele.attr('enable'),
             label = $ele.attr('label'),
             labelWidth = $ele.attr('labelWidth'),
@@ -88,8 +89,20 @@ define('chosen', ['chosen.jquery'], function () {
         if (typeof v !== 'undefined' && v === "false") {
           this.visible(false);
         }
+        if (typeof empty !== 'undefined') {
+          $ele.attr('data-placeholder', empty);
+        }
         if (typeof value !== 'undefined' && value.trim() !== '') {
           this.valueSelect(value);
+        } else {
+          // no default value means empty
+          if (typeof empty !== 'undefined') {
+            if (this.isMultiple()) {
+              $ele.next().find('li input').val(empty);
+            } else {
+              $ele.next().find('a span').text(empty);
+            }
+          }
         }
         if (typeof enable !== 'undefined') {
           enable === 'false' ? this.disable(true) : this.disable(false);
@@ -264,6 +277,26 @@ define('chosen', ['chosen.jquery'], function () {
           return $('#'+_id+'_label').text();
         } else {
           $('#'+_id+'_label').text(l);
+        }
+      };
+
+      this.empty = function(e) {
+        if (arguments.length === 0) {
+          return this.$ele.attr('data-placeholder');
+        } else {
+          this.$ele.attr('data-placeholder', e);
+
+          if (this.isMultiple()) {
+            if (this.select().length === 0) {
+              this.$ele.next().find('li input').val(e);
+            }
+          } else {
+            if (this.select().value === '') {
+              this.$ele.next().find('a span').text(e);
+            }
+          }
+
+          this.$ele.trigger("liszt:updated");
         }
       };
 

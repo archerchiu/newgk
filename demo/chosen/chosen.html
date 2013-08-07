@@ -66,7 +66,7 @@
 </head>
 <body gk-app>
     <h3>Single Option</h3>
-	<chosen id="so" label="性別" labelWidth="80px" title="This is single..." enable="true" value="男生" visible="true" width="300px" onclick="alert('clicked!!');">m:男生,f:女生</chosen>
+	<chosen id="so" label="性別" labelWidth="80px" title="This is single..." enable="true" value="男生" visible="true" width="300px" empty="gender" onclick="alert('clicked!!');">m:男生,f:女生</chosen>
     <button onclick='so_select();'>$('#so').gk().select();</button>
     <button onclick='so_clear();'>clear</button>
     <button onclick='so_enable();'>enable</button>
@@ -74,7 +74,7 @@
     <button onclick='so_label();'>label</button>
     <br>
     <h3>No label Single Option</h3>
-    <chosen id="nlso" title="This is single..." enable="true" value="男生" visible="true" width="300px" onchange="alert('changed!!');">1:YES,2:NO</chosen>
+    <chosen id="nlso" title="This is single..." empty="pick up..." enable="true" visible="true" width="300px" onchange="alert('changed!!');">1:YES,2:NO</chosen>
     <button onclick='nlso_width();'>width=400px</button>
     <button onclick='nlso_height();'>height=50px</button>
     <input id="nlso_add" type='text' value='a:AA'/><button onclick="nlso_add();">add</button>
@@ -87,7 +87,7 @@
     <button onclick="abso_list();">list</button>
     <br>
     <h3>Multiple Options</h3>
-    <chosen id="mo" label="性別" labelWidth="80px" title="This is multiple..." enable="true" value="男生" visible="true" width="300px" multiple="true">m:男生,f:女生</chosen>
+    <chosen id="mo" label="性別" labelWidth="80px" title="This is multiple..." enable="true" value="男生" visible="true" width="300px" multiple="true" empty="multiple choices...">m:男生,f:女生</chosen>
     <button onclick='mo_select();'>$('#mo').gk().select();</button>
     <button onclick='mo_clear();'>clear</button>
     <button onclick='mo_enable();'>enable</button>
