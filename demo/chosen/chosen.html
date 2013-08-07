@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <script src='../../lib/utils/require.js'></script>
+    <script src='../../lib/jquery/jquery-1.10.1.js'></script>
+    <script src='../../lib/gk/jquery.gk-0.5.js'></script>
+    <script gk-tags='chosen' src='../../gk-loader.js'></script>
+    <script>
+	var change = function(t) {
+		console.log(t);
+	};
+    var so_select = function() {
+        alert(JSON.stringify($('#so').gk().select()));
+    };
+    var so_clear = function() {
+        $('#so').gk().clear();
+    };
+    var so_enable = function() {
+        $('#so').gk().disable(false);
+    };
+    var so_disable = function() {
+        $('#so').gk().disable(true);
+    };
+    var so_label = function() {
+        alert($('#so').gk().label());
+    };
+    var nlso_width = function() {
+        $('#nlso').gk().width("500px");
+    };
+    var nlso_height = function() {
+        $('#nlso').gk().height("50px");
+    };
+    var nlso_add = function() {
+        $('#nlso').gk().add($('#nlso_add').val());
+    };
+    var nlso_addList = function() {
+        $('#nlso').gk().addList($('#nlso_addList').val());
+    };
+    var abso_add = function() {
+        $('#abso').gk().add($('#abso_add').val());
+    };
+    var abso_addList = function() {
+        $('#abso').gk().addList($('#abso_addList').val());
+    };
+    var abso_list = function() {
+        alert(JSON.stringify($('#abso').gk().list()));
+    };
+    var mo_select = function() {
+        alert(JSON.stringify($('#mo').gk().select()));
+    };
+    var mo_clear = function() {
+        $('#mo').gk().clear();
+    };
+    var mo_enable = function() {
+        $('#mo').gk().disable(false);
+    };
+    var mo_disable = function() {
+        $('#mo').gk().disable(true);
+    };
+    var mo_list = function() {
+        alert(JSON.stringify($('#mo').gk().list()));
+    };
+    </script>
+</head>
+<body gk-app>
+    <h3>Single Option</h3>
+	<chosen id="so" label="性別" labelWidth="80px" title="This is single..." enable="true" value="男生" visible="true" width="300px" onclick="alert('clicked!!');">m:男生,f:女生</chosen>
+    <button onclick='so_select();'>$('#so').gk().select();</button>
+    <button onclick='so_clear();'>clear</button>
+    <button onclick='so_enable();'>enable</button>
+    <button onclick='so_disable();'>disable</button>
+    <button onclick='so_label();'>label</button>
+    <br>
+    <h3>No label Single Option</h3>
+    <chosen id="nlso" title="This is single..." enable="true" value="男生" visible="true" width="300px" onchange="alert('changed!!');">1:YES,2:NO</chosen>
+    <button onclick='nlso_width();'>width=400px</button>
+    <button onclick='nlso_height();'>height=50px</button>
+    <input id="nlso_add" type='text' value='a:AA'/><button onclick="nlso_add();">add</button>
+    <input id="nlso_addList" type='text' value='x:XX,y:YY'/><button onclick="nlso_addList();">add</button>
+    <br>
+    <h3>Allow Blank Single Option</h3>
+    <chosen id="abso" allowBlank="true" label="性別" labelWidth="80px" title="This is single..." enable="true" value="男生" visible="true" width="300px">m:男生,f:女生</chosen>
+    <input id="abso_add" type='text' value='{"a":"AA"}'/><button onclick="abso_add();">add</button>
+    <input id="abso_addList" type='text' value='{"x":"XX","y":"YY"}'/><button onclick="abso_addList();">add</button>
+    <button onclick="abso_list();">list</button>
+    <br>
+    <h3>Multiple Options</h3>
+    <chosen id="mo" label="性別" labelWidth="80px" title="This is multiple..." enable="true" value="男生" visible="true" width="300px" multiple="true">m:男生,f:女生</chosen>
+    <button onclick='mo_select();'>$('#mo').gk().select();</button>
+    <button onclick='mo_clear();'>clear</button>
+    <button onclick='mo_enable();'>enable</button>
+    <button onclick='mo_disable();'>disable</button>
+    <button onclick="mo_list();">list</button>
+    <br>
+</body>
+</html>

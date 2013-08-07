@@ -23,11 +23,13 @@ requirejs.config({
 //define module (component)
 define('chosen', ['chosen.jquery'], function () {
   return {
-    template: "<span><span id='{{id}}_label'></span><select id='{{id}}' class='{{class}}' empty='{{data-placeholder}}' enable='{{enable}}' height='{{height}}' label='{{label}}' labelWidth='{{labelWidth}}' name='{{name}}' style='{{style}}' title='{{title}}' value='{{value}}' visible='{{visible}}' width='{{width}}' multiple='{{multiple}}' gk-onclick='{{onclick}}'><content></content></select></span>",
+    template: "<span><span id='{{id}}_label'></span><select id='{{id}}' allowBlank='{{allowBlank}}' class='{{class}}' empty='{{data-placeholder}}' enable='{{enable}}' height='{{height}}' label='{{label}}' labelWidth='{{labelWidth}}' name='{{name}}' style='{{style}}' title='{{title}}' value='{{value}}' visible='{{visible}}' width='{{width}}' multiple='{{multiple}}' gk-onclick='{{onclick}}'><content></content></select></span>",
     script: function() {
       var $ = window.jQuery,
           _id;
 
+      // c is string, not object
+      // format is "value1:text1,value2:text2"
       var _parseContent = function(c) {
         var rsObj = {};
             options = c.split(',');
@@ -42,39 +44,46 @@ define('chosen', ['chosen.jquery'], function () {
       this.init = function() {
         var self = this,
             $ele = this.$ele,
+            content = $ele.gk().$originEle.html(),
             w = $ele.attr('width'),
         	  h = $ele.attr('height'),
+            ab = $ele.attr('allowBlank'),
             v = $ele.attr('visible'),
             value = $ele.attr('value'),
             enable = $ele.attr('enable'),
             label = $ele.attr('label'),
-            labelWidth = $ele.attr('labelWidth');
+            labelWidth = $ele.attr('labelWidth'),
+            click = $ele.attr('gk-onclick');
         
         _id = self.id;
         
-        // get the original element
-        var $gkComOrigin = $ele.gk().$originEle(),
-            content = $gkComOrigin.html();
-        
         // add blank one at first: <option value=""></option>
         $ele.append("<option value=''></option>");
+        // set width
+        $ele.css('width', typeof w === 'undefined' ? '250px' : w);
 
         // transfer content to options
         this.addList(content);
         
-        $ele.addClass('chzn-select');
-        $ele.css('width', typeof w === 'undefined' ? '250px' : w);
+        // decide class type
+        $ele.addClass(ab === 'true' ? 'chzn-select-deselect' : 'chzn-select');
         
         // chosen perform
-        $('.chzn-select').chosen({});
+        if (ab === 'true') {
+          $('.chzn-select-deselect').chosen({allow_single_deselect:true});
+        } else {
+          $('.chzn-select').chosen({});
+        }
         // https://github.com/harvesthq/chosen/issues/235
         // For multi selects, most of the height (though not all) is driven by the input field.
         // .chzn-container-multi .chzn-choices .search-field input
         
         // settings on init
         if (typeof h !== 'undefined') {
-        	$('.chzn-container-single .chzn-single').css('height', h).css('line-height', h);
-        	// $('.chzn-container .chzn-results').css('height', h);
+        	//$('.chzn-container-single .chzn-single').css('height', h).css('line-height', h);
+          if (!this.isMultiple()) {
+            $ele.next().find('a').css('height', h);
+          }
         }
         if (typeof v !== 'undefined' && v === "false") {
           this.visible(false);
@@ -95,20 +104,42 @@ define('chosen', ['chosen.jquery'], function () {
             $label.width('90px');
           }
         }
+
+        // event handler
+        if (typeof click !== 'undefined') {
+          $ele.parent().prop('onclick', null);
+          $ele.next().find('a').on('click', function() {
+            eval(click);
+          });
+        }
+
       };
       
       this.add = function(item) {
-      	if (typeof item !== 'object') {
-      	  item = _parseContent(item);
+      	if (typeof item === 'string') {
+          if (item === '') return;
+
+          // parse to JSON object
+          try {
+            this.addList(JSON.parse(item));
+          } catch(error) {
+            this.addList(_parseContent(item));
+          }
       	}
-        this.addList(item);
       };
       
       this.addList = function(list) {
       	var options = '';
       	
-        if (typeof list !== 'object') {
-        	 list = _parseContent(list);
+        if (typeof list === 'string') {
+          if (list === '') return;
+
+          // parse to JSON object
+          try {
+            list = JSON.parse(list);
+          } catch(error) {
+            list = _parseContent(list);
+          }
         }
 
       	for (var item in list) {
@@ -116,6 +147,19 @@ define('chosen', ['chosen.jquery'], function () {
       	}
       	this.$ele.append(options);
       	this.$ele.trigger("liszt:updated");
+      };
+
+      this.list = function() {
+        var oa = [];
+        this.$ele.find('option').each(function() {
+          var o = {};
+          if (this.value !== '') {
+            o['value'] = this.value;
+            o['text'] = this.text;
+            oa.push(o);
+          }
+        });
+        return oa;
       };
       
       this.del = function(key) {
@@ -136,23 +180,39 @@ define('chosen', ['chosen.jquery'], function () {
       };
 
       this.select = function(key) {
+        var $ele = this.$ele;
+
+        // getter
         if (arguments.length === 0) {
-          var s;
-          this.$ele.find('option').each(function() {
-            if (this.selected) {
-              return s = this.value;
-            }
-          });
-          return s;
+          if (this.isMultiple()) {
+            var oa = [];
+            $ele.next().find('.search-choice span').each(function() {
+              var o = {};
+              o['value'] = $ele.find("option:contains('"+this.textContent+"')").val();
+              o['text'] = this.textContent;
+              oa.push(o);
+            });
+            return oa;
+          } else {
+            var o = {};
+            $ele.find('option').each(function() {
+              if (this.selected) {
+                o['value'] = this.value;
+                o['text'] = this.text;
+              }
+            });
+            return o;
+          }
         } else {
+          // setter
           // 給定一個list所沒有的key值，是保留在原選項，還是回到未選擇狀態
           // 這還牽涉到 single or multiple mode
-          this.$ele.find('option').each(function() {
+          $ele.find('option').each(function() {
             if (!this.selected && this.value === key) {
               this.selected = true;
             }
           });
-          this.$ele.trigger("liszt:updated");
+          $ele.trigger("liszt:updated");
         }
       };
 
@@ -193,9 +253,20 @@ define('chosen', ['chosen.jquery'], function () {
     	  if (arguments.length === 0) {
           return this.$ele.next().height();
         } else {
-          $('.chzn-container-single .chzn-single').css('height', h).css('line-height', h);
+          if (!this.isMultiple()) {
+            this.$ele.next().find('a').css('height', h);
+          }
         }
       };
+
+      this.label = function(l) {
+        if (arguments.length === 0) {
+          return $('#'+_id+'_label').text();
+        } else {
+          $('#'+_id+'_label').text(l);
+        }
+      };
+
     }
   };
 });
