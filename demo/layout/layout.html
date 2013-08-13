@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style type="text/css">
+      html, body {
+        background: #666;
+        height: 100%;
+        border: none;
+        padding: 0px;
+        margin: 0px
+      }
+
+      #container {
+        margin: 0 auto;
+        width: 100%;
+        max-width: 900px;
+        min-width: 700px;
+      }
+    </style>
+  </head>
+  <body gk-app>
+    <layout id='container'>
+      <layout-north id='north'>North</layout-north>
+      <layout-center id='center'>
+        <p><a href="http://layout.jquery-dev.net/demos.html">Go to the Demos page</a></p>
+      </layout-center>
+      <layout-east>East</layout-east>
+      <layout-south>South</layout-south>
+      <layout-west>West</layout-west>
+    </layout>
+
+    <script src='../../lib/utils/require.js'></script>
+    <script src='../../lib/jquery/jquery-1.10.1.js'></script>
+    <script src='../../lib/gk/jquery.gk-0.5.js'></script>
+    <script gk-tags='layout,layout-center,layout-north,layout-south,layout-east,layout-west' src='../../gk-loader.js'></script>
+    <script type="text/javascript">
+      $(document).on('gkComponentsReady', function() {
+    	 
+      });
+    </script>
+  </body>
+</html>
