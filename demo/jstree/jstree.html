@@ -5,34 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <style type="text/css">
       #tree {
-        height: 500px;
+        height: 100px;
       }
     </style>
   </head>
   <body gk-app>
     <jstree id='tree'>
-      <ul> 
-        <li id='root'> 
+      <ul>
+        <li id='root'>
            <a href='#'>Root node 1</a>
-            <ul> 
-                <li> 
+            <ul>
+                <li>
                     <a href='#'>Child node 1</a>
-                    <ul> 
-                      <li> 
+                    <ul>
+                      <li>
                           <a href='#'>Child node 3</a>
-                      </li> 
-                      <li> 
-                          <a href='#'>Child node 4</a> 
-                      </li> 
+                      </li>
+                      <li>
+                          <a href='#'>Child node 4</a>
+                      </li>
                     </ul>
-                </li> 
-                <li> 
-                    <a href='#'>Child node 2</a> 
-                </li> 
-            </ul> 
-        </li> 
-      </ul> 
+                </li>
+                <li>
+                    <a href='#'>Child node 2</a>
+                </li>
+            </ul>
+        </li>
+      </ul>
     </jstree>
+    <h3>XML Content jsTree</h3>
+      <jstree id="demo2">
+        <a1 id="a1"></a1><a2 id="a2"><a3 id="a3"></a3><a4 id="a4"></a4></a2><a5 id='a5'></a5>
+      </jstree>
+    <br>
 
     <script src='../../lib/utils/require.js'></script>
     <script src='../../lib/jquery/jquery-1.10.1.js'></script>
