@@ -20,6 +20,12 @@ define('jstree', ['jquery_jstree'], function() {
 					$ele = this.$ele,
 					_tempXmlDoc;
 
+			// make the html data rules
+			// todo: should be made exact rule
+			var isHtmlData = function(c) {
+				return $(c).find('li').has('a').length !== 0;
+			};
+
 			var createNode = function(doc, parentId, nodeName, nodeId) {
 				var item = document.createElement("item"),
 						content = document.createElement("content"),
@@ -28,8 +34,12 @@ define('jstree', ['jquery_jstree'], function() {
 				nameNode.textContent = nodeName;
 				content.appendChild(nameNode);
 				item.appendChild(content);
-				item.setAttribute('id', nodeId);
-				item.setAttribute('parent_id', parentId);
+				if (typeof nodeId !== 'undefined') {
+					item.setAttribute('id', nodeId);
+				}
+				if (typeof parentId !== 'undefined') {
+					item.setAttribute('parent_id', parentId);
+				}
 				doc.documentElement.appendChild(item);
 				return doc;
 			};
@@ -50,49 +60,67 @@ define('jstree', ['jquery_jstree'], function() {
 
 			this.init = function() {
 				var classic_theme = {
-					theme: 'classic',
-					dots: true,
-					icons: true
+					'theme' : 'classic',
+					'dots' : true,
+					'icons' : true
 				};
 
 				var theme = $.extend(classic_theme, {
-					theme: $oriEle.attr('theme'),
-					dots: $oriEle.attr('dots') === 'false' ? false : true,
-					icons: $oriEle.attr('icons') === 'false' ? false : true
+					'theme' : $oriEle.attr('theme'),
+					'dots' : $oriEle.attr('dots') === 'false' ? false : true,
+					'icons' : $oriEle.attr('icons') === 'false' ? false : true
 				});
 
 				var content = $oriEle.html().trim();
 
-				var plugins = ['themes', 'html_data', 'json_data', 'xml_data'];
+				var plugins = ['themes', 'html_data'],
+						xml_plugins = ['themes', 'xml_data'],
+						json_plugins = ['themes', 'json_data'];
 
 				if ($oriEle.attr('checkbox') === 'true') {
 					plugins.push('checkbox');
 				}
 
-				// xml data perform
-				if (content.match(/^\<ul\>/) === null) {
-					// transfer xml to _tempXmlDoc variable
-					// todo: maybe has better way ...
-					_xmlAdapter(content, false);
-					var xmlData = (new XMLSerializer()).serializeToString(_tempXmlDoc),
-							xmlStr = xmlData.split(' xmlns="http://www.w3.org/1999/xhtml"').join('');
+				// Beginning of content is not <ul>, means not html data
 
-					$ele.jstree({
-						"xml_data" : {
-							"data" : xmlStr
-						},
-						"plugins" : ["themes","xml_data"],
-						"themes" : {"theme":"classic"}
-					});
-				} else {
-					$ele.jstree({
-						"core" : {
-							"initially_open" : ['root']
-						},
-						"plugins" : plugins,
-						"themes" : theme
-					});
-				}
+					try {
+						var jsonData = JSON.parse(content);
+						// json data zone if parse success
+						$ele.jstree({
+							"json_data" : {
+								"data" : jsonData
+							},
+							"plugins" : json_plugins,
+							"themes" : theme
+						});
+					} catch(error) {
+						if (isHtmlData(content)) {
+							// html data zone
+							$ele.jstree({
+								"core" : {
+									"initially_open" : ['root']
+								},
+								"plugins" : plugins,
+								"themes" : theme
+							});
+						} else {
+							// assume it's xml if parse error
+							// xml data zone
+							// transfer xml to _tempXmlDoc variable
+							// todo: maybe has better way ...
+							_xmlAdapter(content, false);
+							var xmlData = (new XMLSerializer()).serializeToString(_tempXmlDoc),
+								xmlStr = xmlData.split(' xmlns="http://www.w3.org/1999/xhtml"').join('');
+
+							$ele.jstree({
+								"xml_data" : {
+									"data" : xmlStr
+								},
+								"plugins" : xml_plugins,
+								"themes" : theme
+							});
+						}
+					}
 
 			};
 		}
