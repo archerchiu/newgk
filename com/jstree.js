@@ -73,9 +73,9 @@ define('jstree', ['jquery_jstree'], function() {
 
 				var content = $oriEle.html().trim();
 
-				var plugins = ['themes', 'html_data'],
-						xml_plugins = ['themes', 'xml_data'],
-						json_plugins = ['themes', 'json_data'];
+				var plugins = ['themes', 'html_data', 'search'],
+						xml_plugins = ['themes', 'xml_data', 'search'],
+						json_plugins = ['themes', 'json_data', 'search'];
 
 				if ($oriEle.attr('checkbox') === 'true') {
 					plugins.push('checkbox');

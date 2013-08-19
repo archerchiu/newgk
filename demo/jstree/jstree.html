@@ -3,14 +3,12 @@
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <style type="text/css">
-      #tree {
-        height: 100px;
-      }
-    </style>
   </head>
   <body gk-app>
-    <jstree id='tree'>
+    <input id='search' type='text' />
+    <input id='clear' type='button' value='Clear' />
+    <h3>HTML Content jsTree</h3>
+    <jstree id='html_tree'>
       <ul>
         <li id='root'>
            <a href='#'>Root node 1</a>
@@ -61,7 +59,17 @@
     <script gk-tags='jstree' src='../../gk-loader.js'></script>
     <script type="text/javascript">
       $(document).on('gkComponentsReady', function() {
-    	 
+        var $search = $('#search');
+        var $jstree = $('.jstree');
+
+        $search.keyup(function(event) {
+          $jstree.jstree('search', $(this).val());
+        });
+
+        $('#clear').click(function(event) {
+          $search.val('');
+          $jstree.jstree('clear_search');
+        });
       });
     </script>
   </body>
