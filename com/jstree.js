@@ -79,6 +79,14 @@ define('jstree', ['jquery_jstree'], function() {
 
 				if ($oriEle.attr('checkbox') === 'true') {
 					plugins.push('checkbox');
+					xml_plugins.push('checkbox');
+					json_plugins.push('checkbox');
+				}
+
+				if ($oriEle.attr('dnd') === 'true') {
+					plugins.push('dnd');
+					xml_plugins.push('dnd');
+					json_plugins.push('dnd');
 				}
 
 				// Beginning of content is not <ul>, means not html data
