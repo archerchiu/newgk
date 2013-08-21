@@ -6,7 +6,7 @@
   </head>
   <body gk-app>
     <h3>Attributes</h3>
-    <p>theme(default = classic), dot(default = true), icon(default = true), checkbox(default = false), dnd(default = false)</p>
+    <p>theme(default = classic), dot(default = true), icon(default = true), checkbox(default = false), dnd(default = false), crrm(default = false)</p>
     <h3>Search</h3>
     <input id='search' type='text' />
     <input id='clear' type='button' value='Clear' />
@@ -34,10 +34,11 @@
         </li>
       </ul>
     </jstree>
+    <br>
     <h3>XML Content jsTree</h3>
-      <jstree id="xml_tree">
-        <a1 id="a1"></a1><a2 id="a2"><a3 id="a3"></a3><a4 id="a4"></a4></a2><a5 id='a5'></a5>
-      </jstree>
+    <jstree id="xml_tree">
+      <a1 id="a1"></a1><a2 id="a2"><a3 id="a3"></a3><a4 id="a4"></a4></a2><a5 id='a5'></a5>
+    </jstree>
     <br>
     <h3>JSON Content jsTree</h3>
     <jstree id="json_tree">
@@ -55,6 +56,13 @@
         }]
     </jstree>
     <br>
+    <h3>CRRM jsTree</h3>
+    <input id='create' class='crrm' type='button' value='Create' />
+    <input id='remove' class='crrm' type='button' value='Remove' />
+    <input id='rename' class='crrm' type='button' value='Rename' />
+    <jstree id="crrm_tree" crrm='true'>
+      <a1 id="crrm1"></a1><a2 id="crrm2"><a3 id="crrm3"></a3><a4 id="crrm4"></a4></a2><a5 id='crrm5'></a5>
+    </jstree>
 
     <script src='../../lib/utils/require.js'></script>
     <script src='../../lib/jquery/jquery-1.10.1.js'></script>
@@ -72,6 +80,10 @@
         $('#clear').click(function(event) {
           $search.val('');
           $jstree.jstree('clear_search');
+        });
+
+        $('.crrm').click(function(event) {
+          $('#crrm_tree').jstree(event.target.id);
         });
       });
     </script>

@@ -71,22 +71,23 @@ define('jstree', ['jquery_jstree'], function() {
 					'icons' : $oriEle.attr('icons') === 'false' ? false : true
 				});
 
-				var content = $oriEle.html().trim();
+				var content = $.trim($oriEle.html());
 
-				var plugins = ['themes', 'html_data', 'search'],
-						xml_plugins = ['themes', 'xml_data', 'search'],
-						json_plugins = ['themes', 'json_data', 'search'];
+				var plugins = ['themes', 'search'];
 
 				if ($oriEle.attr('checkbox') === 'true') {
 					plugins.push('checkbox');
-					xml_plugins.push('checkbox');
-					json_plugins.push('checkbox');
 				}
 
 				if ($oriEle.attr('dnd') === 'true') {
 					plugins.push('dnd');
-					xml_plugins.push('dnd');
-					json_plugins.push('dnd');
+				}
+
+				if ($oriEle.attr('crrm') === 'true') {
+					plugins.push('crrm');
+					if ($.inArray('ui', plugins) === -1) {
+						plugins.push('ui');
+					}
 				}
 
 				// Beginning of content is not <ul>, means not html data
@@ -94,16 +95,18 @@ define('jstree', ['jquery_jstree'], function() {
 					try {
 						var jsonData = JSON.parse(content);
 						// json data zone if parse success
+						plugins.push('json_data');
 						$ele.jstree({
 							"json_data" : {
 								"data" : jsonData
 							},
-							"plugins" : json_plugins,
+							"plugins" : plugins,
 							"themes" : theme
 						});
 					} catch(error) {
 						if (isHtmlData(content)) {
 							// html data zone
+							plugins.push('html_data');
 							$ele.jstree({
 								"core" : {
 									"initially_open" : ['root']
@@ -120,11 +123,12 @@ define('jstree', ['jquery_jstree'], function() {
 							var xmlData = (new XMLSerializer()).serializeToString(_tempXmlDoc),
 								xmlStr = xmlData.split(' xmlns="http://www.w3.org/1999/xhtml"').join('');
 
+							plugins.push('xml_data');
 							$ele.jstree({
 								"xml_data" : {
 									"data" : xmlStr
 								},
-								"plugins" : xml_plugins,
+								"plugins" : plugins,
 								"themes" : theme
 							});
 						}
