@@ -56,6 +56,12 @@
         }]
     </jstree>
     <br>
+    <h3>CheckBox jsTree</h3>
+    <input id='get_checked' type='button' value='Get checked' />
+    <jstree id="checkbox_tree" checkbox='true'>
+      <a1 id="a1"></a1><a2 id="a2"><a3 id="a3"></a3><a4 id="a4"></a4></a2><a5 id='a5'></a5>
+    </jstree>
+    <br>
     <h3>DND jsTree</h3>
     <jstree id="dnd_tree" dnd='true'>
       <a1 id="a1"></a1><a2 id="a2"><a3 id="a3"></a3><a4 id="a4"></a4></a2><a5 id='a5'></a5>
@@ -85,6 +91,10 @@
         $('#clear').click(function(event) {
           $search.val('');
           $jstree.jstree('clear_search');
+        });
+
+        $('#get_checked').click(function(event) {
+          alert($('#checkbox_tree').jstree('get_checked'));
         });
 
         $('#dnd_tree').on('move_node.jstree', function(event, obj) {
