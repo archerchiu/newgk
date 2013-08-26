@@ -3,7 +3,7 @@ requirejs.config({
 	paths: {
 		'swfupload': 'lib/uploader/js/swfupload',
 		'swf.handler': 'lib/uploader/js/handlers',
-		'jquery.filedrop': 'lib/uploader/js/jquery.filedrop'
+		'jquery.filepicker': 'lib/uploader/js/jquery.filepicker'
 	},
 	callback: function () {
 		function loadCss(url, req) {
@@ -21,25 +21,25 @@ requirejs.config({
 });
 
 // define module (component)
-define('uploader', ['swfupload','swf.handler','jquery.filedrop'], function() {
+define('uploader', ['swfupload','swf.handler','jquery.filepicker'], function() {
 	return {
 		template: "<div id='{{id}}' type='button' style='width:36px;height:29px;border:1px solid;border-radius:5px;background:no-repeat url(../../lib/uploader/img/upload_32.png) 2px 1px;' />" +
-			"<div id='{{id}}_fileGap' class='gkUploaderFileGap' style='display:none;position:absolute;z-index:99;font-size:14px;font-family:Segoe UI,Arial,sans-serif;background-color:#000000;overflow-y:auto;width:381px;height:125px;border:1px solid;border-radius:5px;margin-top:3px;box-shadow:4px 4px 3px rgba(20%,20%,40%,0.5);'></div>",
+			"<div id='{{id}}_fileGap' class='gkUploaderFileGap' style='display:none;position:absolute;z-index:99;font-size:14px;font-family:Segoe UI,Arial,sans-serif;background-color:#000000;color:white;overflow-y:auto;width:381px;height:125px;border:1px solid;border-radius:5px;margin-top:3px;box-shadow:4px 4px 3px rgba(20%,20%,40%,0.5);'></div>",
 		script: function() {
 			var $oriEle = this.$originEle,
 				$ele = this.$ele,
-				_id, $fileGap, $gapMsg;
+				_id, $fileGap;
 
 			var gapTemplate =
 				'<div class="gkUploaderPreview">' +
 					'<span class="gkUploaderImageHolder">' +
-					'<a></a>' +
-					'<span class="gkUploaded"></span>' +
+						'<a></a>' +
+						'<span class="gkUploaded"></span>' +
 					'</span>' +
-					'<span class="gkUploaderProgressHolder">' +
-					'<span class="gkUploaderProgress"></sapn>' +
+						'<span class="gkUploaderProgressHolder">' +
+						'<span class="gkUploaderProgress"></sapn>' +
 					'</span>' +
-					'</div>';
+				'</div>';
 
 			var createImage = function(file) {
 				var $gapTemplate = $(gapTemplate),
@@ -52,19 +52,12 @@ define('uploader', ['swfupload','swf.handler','jquery.filedrop'], function() {
 				};
 
 				// Reading the file as a DataURL. When finished,
-				// this will trigger the onload function above:
+				// this will trigger the onload function above
 				reader.readAsDataURL(file);
 
-				$gapMsg.hide();
 				$gapTemplate.appendTo($fileGap);
 
-				// Associating a preview container
-				// with the file, using jQuery's $.data():
 				$.data(file, $gapTemplate);
-			}
-
-			var showMessage = function(msg) {
-				$gapMsg.html(msg);
 			}
 
 			this.init = function() {
@@ -75,18 +68,10 @@ define('uploader', ['swfupload','swf.handler','jquery.filedrop'], function() {
 
 				// Check File API support
 				if (window.File && window.FileList && window.FileReader) {
-					// $fileGap.html("<span><input id='"+_id+"_pickFiles' type='file' multiple /></span><span><input id='"+_id+"_uploadBtn' type='button' value='Upload' style='display:none' /></span>");
-					var fileGapLayout =
-						"<div id='"+_id+"_gapMsg' style='text-align:center;'>" +
-							"<span style='font-size:16px;color:white;'>Drop files here to upload ...</span>" +
-							"</div>";
-					$fileGap.html(fileGapLayout);
+					$fileGap.html("<span><input id='"+_id+"_pickFiles' type='file' multiple /></span><div id='"+_id+"_fileList'></div>");
 
-					// perform file gap to give the file handler ability
-					$gapMsg = $("#"+_id+"_gapMsg");
-
-					$fileGap.filedrop({
-						paramname:'pic',
+					$fileGap.filepick({
+						paramname:'fileId',
 
 						url: 'event/multipart/eventBus/handler.save.go?fileId=',
 
@@ -97,7 +82,7 @@ define('uploader', ['swfupload','swf.handler','jquery.filedrop'], function() {
 						error: function (err, file) {
 							switch (err) {
 								case 'BrowserNotSupported':
-									showMessage('Your browser does not support HTML5 file uploads!');
+									alert('Your browser does not support HTML5 file uploads!');
 									break;
 								case 'TooManyFiles':
 									alert('Too many files! Please select 5 at most! (configurable)');
@@ -115,6 +100,10 @@ define('uploader', ['swfupload','swf.handler','jquery.filedrop'], function() {
 						},
 
 						uploadStarted: function (i, file, len) {
+							if (i === 0) {
+								$('#'+_id+'_fileList').html('');
+							}
+							$('#'+_id+'_fileList').append("<ul><li>"+file.name+"</li></ul>");
 							createImage(file);
 						},
 
@@ -187,27 +176,20 @@ define('uploader', ['swfupload','swf.handler','jquery.filedrop'], function() {
 							$fileGap.css('left', $fileGap.offset().left - 345);
 						}
 						if ($(window).height() - ($fileGap.offset().top + $fileGap.outerHeight()) < 0) {
-							$fileGap.css('top', $fileGap.offset().top - 161);
+							$fileGap.css('top', $fileGap.offset().top - 171);
 						}
 					}
 				});
 
 				$("#"+_id+"_pickFiles").on('change', function() {
 					var files = this.files,
-						fileRow = "<ul>",
-						$uploadBtn = $("#"+_id+"_uploadBtn");
+						fileRow = "<ul>";
 
 					if (files.length > 0) {
 						for (var i = 0, f; f = files[i]; i++) {
 							fileRow += "<li>"+ f.name +"</li>";
 						}
 						fileRow += "</ul>";
-						$uploadBtn.next().remove();
-						$uploadBtn.after(fileRow);
-						$uploadBtn.show();
-					} else {
-						$uploadBtn.next().remove();
-						$uploadBtn.hide();
 					}
 				});
 
