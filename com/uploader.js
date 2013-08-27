@@ -101,11 +101,13 @@ define('uploader', ['swfupload','swf.handler','jquery.filepicker'], function() {
                 $.ajax({
                   url: "event/put/def/handler.delete.go",
             			type: "POST",
-            			data: 'j:{"e":"def", "id":"handler.delete", "i":"/fileupload/' + uploadPath + '/' + file.name + '", "t":"string"}'
-                }).done(function() {
-                  debugger;
-                  //$(this).addClass("done");
-                  console.log('deleted');
+                  data: {"id":"/fileupload/" + uploadPath + "/" + file.name}
+            			//data: 'j:{"e":"def", "id":"handler.delete", "i":"/fileupload/' + uploadPath + '/' + file.name + '", "t":"string"}'
+                }).done(function(res) {
+                  // JSON.parse(res).i.file
+                  $('.gkUploaderPreview').find('a:contains(' + JSON.parse(res).i.file + ')').each(function() {
+                    $(this).parent().parent().hide();
+                  });
                 });
               });
 						},
