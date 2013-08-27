@@ -16,6 +16,23 @@
     background: #7E7373
 }
 
+.gkUploaderFileGap {
+  display:none;
+  position:absolute;
+  z-index:99;
+  font-size:14px;
+  font-family:Segoe UI,Arial,sans-serif;
+  background-color:#000000;
+  color:white;
+  overflow-y:auto;
+  width:381px;
+  height:125px;
+  border:1px solid;
+  border-radius:5px;
+  margin-top:3px;
+  box-shadow:4px 4px 3px rgba(20%,20%,40%,0.5);
+}
+
 /*-------------------------
 	Image Previews
 --------------------------*/
@@ -34,7 +51,6 @@
     max-height: 180px;
     border: 3px solid #fff;
     display: block;
-
     box-shadow: 0 0 2px #000;
 }
 
@@ -44,14 +60,22 @@
     display: inline-block;
 }
 
-.gkUploaded {
+.gkUploaderImageHolder a {
+    color: #2586d0;
+  	word-wrap: break-word;
+}
+
+.gkUploaderDel {
     position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: url('../img/done.png') no-repeat center center rgba(255,255,255,0.5);
-    display: none;
+    top: -3px;
+    right: 0;
+  	color: white;
+  	font-weight: bold;
+  	cursor: pointer;
+}
+
+.gkUploaderDel:hover {
+  color: rgb(243, 20, 20);
 }
 
 /*-------------------------

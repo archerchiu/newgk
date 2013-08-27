@@ -24,7 +24,7 @@ requirejs.config({
 define('uploader', ['swfupload','swf.handler','jquery.filepicker'], function() {
 	return {
 		template: "<div id='{{id}}' type='button' style='width:36px;height:29px;border:1px solid;border-radius:5px;background:no-repeat url(../../lib/uploader/img/upload_32.png) 2px 1px;' />" +
-			"<div id='{{id}}_fileGap' class='gkUploaderFileGap' style='display:none;position:absolute;z-index:99;font-size:14px;font-family:Segoe UI,Arial,sans-serif;background-color:#000000;color:white;overflow-y:auto;width:381px;height:125px;border:1px solid;border-radius:5px;margin-top:3px;box-shadow:4px 4px 3px rgba(20%,20%,40%,0.5);'></div>",
+			"<div id='{{id}}_fileGap' class='gkUploaderFileGap'></div>",
 		script: function() {
 			var $oriEle = this.$originEle,
 				$ele = this.$ele,
@@ -33,15 +33,15 @@ define('uploader', ['swfupload','swf.handler','jquery.filepicker'], function() {
 			var gapTemplate =
 				'<div class="gkUploaderPreview">' +
 					'<span class="gkUploaderImageHolder">' +
-						'<a></a>' +
-						'<span class="gkUploaded"></span>' +
+    				'<a target="_blank"></a>' +
+						'<span class="gkUploaderDel">X</span>' +
 					'</span>' +
-						'<span class="gkUploaderProgressHolder">' +
+					'<span class="gkUploaderProgressHolder">' +
 						'<span class="gkUploaderProgress"></sapn>' +
 					'</span>' +
 				'</div>';
 
-			var createImage = function(file) {
+			var _createFile = function(file) {
 				var $gapTemplate = $(gapTemplate),
 						aLink = $('a', $gapTemplate),
 						reader = new FileReader();
@@ -58,10 +58,24 @@ define('uploader', ['swfupload','swf.handler','jquery.filepicker'], function() {
 				$gapTemplate.appendTo($fileGap);
 
 				$.data(file, $gapTemplate);
-			}
+			};
+       
+			var _deleteFile = function() {
+        // .gkUploaderDel ajax url: event/put/def/handler.delete.go
+        // j:{"e":"def", "id":"handler.delete", "i":"/fileupload/archer/DEPT.dao", "t":"string"}
+        $.ajax({
+          url: "event/put/def/handler.delete.go",
+          data: {"i":"/fileupload/" + uploadPath + "/" + file.name}
+        }).done(function() {
+          debugger;
+          //$(this).addClass("done");
+          console.log('deleted');
+        });
+			};
 
 			this.init = function() {
-				var swfu;
+				var swfu,
+            uploadPath = typeof $oriEle.attr("data-upload-path") !== 'undefined' ? $oriEle.attr("data-upload-path").trim() : '';
 
 				_id = this.id;
 				$fileGap = $("#"+_id+"_fileGap");
@@ -73,10 +87,27 @@ define('uploader', ['swfupload','swf.handler','jquery.filepicker'], function() {
 					$fileGap.filepick({
 						paramname:'fileId',
 
-						url: 'event/multipart/eventBus/handler.save.go?fileId=',
+						url: 'event/multipart/eventBus/handler.save.go?fileId=' + uploadPath,
 
 						uploadFinished: function (i, file, response) {
 							$.data(file).addClass('done');
+            	//var ctx = window.location.pathname.split('/')[1];
+              //$.data(file).find('a').attr('href', '/' + ctx + '/' + response.replace('//','/'));
+            	$.data(file).find('a').attr('href', 'event/put/def/handler.download.go?id=/fileupload/' + uploadPath + '/' + file.name);
+            	// bind event for delete file
+              $.data(file).find('a').next().on('click', function() {
+              	// .gkUploaderDel ajax url: event/put/def/handler.delete.go
+                // j:{"e":"def", "id":"handler.delete", "i":"/fileupload/archer/DEPT.dao", "t":"string"}
+                $.ajax({
+                  url: "event/put/def/handler.delete.go",
+            			type: "POST",
+            			data: 'j:{"e":"def", "id":"handler.delete", "i":"/fileupload/' + uploadPath + '/' + file.name + '", "t":"string"}'
+                }).done(function() {
+                  debugger;
+                  //$(this).addClass("done");
+                  console.log('deleted');
+                });
+              });
 						},
 
 						error: function (err, file) {
@@ -104,7 +135,7 @@ define('uploader', ['swfupload','swf.handler','jquery.filepicker'], function() {
 								$('#'+_id+'_fileList').html('');
 							}
 							$('#'+_id+'_fileList').append("<ul><li>"+file.name+"</li></ul>");
-							createImage(file);
+							_createFile(file);
 						},
 
 						progressUpdated: function (i, file, progress) {
